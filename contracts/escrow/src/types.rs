@@ -256,7 +256,14 @@ pub struct Match {
     /// admin via [`override_result`](crate::EscrowContract::override_result).
     /// Used by [`finalize_result`](crate::EscrowContract::finalize_result) to
     /// determine the payout. `None` when no result is pending.
-    pub pending_winner: Option<Winner>,
+    pub pending_winner: OptionalWinner,
+
+    /// The ledger sequence number at which this match was cancelled.
+    ///
+    /// Set to `Some(env.ledger().sequence())` by
+    /// [`cancel_match`](crate::EscrowContract::cancel_match) when the match
+    /// transitions to [`MatchState::Cancelled`]. `None` for all other states.
+    pub cancelled_ledger: Option<u32>,
 
     /// The ledger sequence number at which this match was completed and the
     /// payout was executed.
